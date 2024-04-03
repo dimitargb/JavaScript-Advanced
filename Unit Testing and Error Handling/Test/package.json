@@ -1,0 +1,16 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mitko",
+  "license": "MIT",
+  "dependencies": {
+    "-": "^0.0.1",
+    "g": "^2.0.1",
+    "mocha": "^10.2.0"
+  }
+}

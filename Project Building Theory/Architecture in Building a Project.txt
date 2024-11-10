@@ -1,0 +1,18 @@
+The Architecture will give our Project the Strucutre in wich we cvan than write a code.
+So jsut like a hint, Softwere needs a Strucutre. In the Softwere structure means how we organize and divide the code
+into diffrent modules, classea and functions. All this holds our code together and we call it a Structure.
+
+The next reason for Architecture is called Maintainability. Wheh we build a Project we allways need to thiink about the future
+and keep in mind the Project is never really done., will will always need to chnage things in the future and we will need 
+to maintain the Project. This works just if the Project is nicely structured and we mide add a new features to the Project
+which brings us Expandability.
+
+Expandability is basiccaly the ability to easily add new Features in the future. This si only possible with a good Structure
+and a good overall Architecture. The perfect Architecture combines all those three aspects of Structure, Maintainability
+and Expandability.
+
+In order to achive this we use well established architecture patterns like MVC, MVP, Flux.
+
+We can also use a Framework like React, Angular, Vue, Svelte to take care of the architecture especiallu for large applications.
+
+Any Architecture must have the following Components - Business Logic, State, Http Library, Application Logic, Presentation Logic

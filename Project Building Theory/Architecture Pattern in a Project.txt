@@ -1,0 +1,15 @@
+This is called Model -> View Controller Architecture.
+This Architecture contains 3 big Parts, the Model, the View and the Controller.
+
+The View is for the Presentation Logic, this is the Part of the Application interacting with the User.
+
+The Model is all about the Application's Data. It usually contains the State and the Business Logic, that 
+manipulates the State. The Model also contains the HTTP Library that might get some Data from the Web.
+From API or from some Backend.
+
+The Controller is what contains the Application Logic and it sits between the Model and the View.
+It basically creats a bridge between the Model and the View, wich shoild know nothing about each-other.
+The Model and the View exsit completely independant form one another.
+
+One of the big goals of the Architecture Pattern(MVC Pattern) is to separate the Business Logic from the Application Logic,
+which makes developing the Application much easyer. But we need osmething to connect this two Parts and this is the Controller.

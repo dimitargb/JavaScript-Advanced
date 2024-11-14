@@ -1,0 +1,28 @@
+Each Architecture must have the following Components - Business Logic, State, Http Library, Application Logic
+and Presentation Logic.
+
+Business Logic - is basically all the code that solves the actual business problem.
+This code is directly releated to what the business does and what it needs.
+If your business is What's up, your business logic will include sending messages, if your business is a bank
+than one of the many parts of the business logic will be to store transactions.
+
+State is one of the most important aspects of any web application.
+The application State is essentially what stores all the data about the application that is running
+in the broser. The Data about the applicattion's Frontend.
+So the State should store any Data that you might fetch from an API or Data that the user inputs
+on whata Page the user is currently viewing. This Data should be the so called 'single source of truth', which should
+be capt in sync with the user Interface. This means if somw Data changes in the State, than the UI shoud 
+reflect that. If something changes in the UI than the State should also change.
+Storing and diplaying Data and keep everything in sync is one of the most difficult tasks in buliding web 
+Applications. That's why there are many State Management Libraries like Redux.
+
+The HTTP Library is simply responsable for making and recieving AJAX requests. Wea have been doing that
+by using the fetch function.
+
+The Application Logic(ROUTER) is the code conserned about the implementaion of the application itself.
+The Application Logic includes handling of UI events and navigation.
+That's the reason why this Component is many times called ROUTER.
+
+Tha Presentation Logic(UI Layer) is about the visible Part of tha application.
+This logic is responsable for displaying the application State ont the User Interface in order to keep
+everything in sync.

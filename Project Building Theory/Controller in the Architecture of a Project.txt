@@ -1,0 +1,15 @@
+We need something to connect the Model and the View form the Architecture Compoments.
+This is the Controller.
+The Controller will hanfdle the event for exsample a Click event, because handling an event is doing something in the Application.
+This si clearly part of the Application Logic. This handling may invilve updating the User Interface and also ask the 
+Model for soem Data.
+So we can say that the Controller dispatches tasks to Model and to the View. It controlles and orechestrates the entire action.
+It organises the whole Application. Asking the Model for some Data might involve doing an AJAX request to the Web.
+This is exactely what the Model does. After the Data arrives the Controller takes the Data and sends it to the View.
+Finally the View will render that Data to the User Interface and finish the cicle.
+The Controller imports  and calls functions from the Model and the View.
+
+In our application first User selects the Recipe and the Page loads with the resipe ID. this is hndled by the Controller 
+Than the Controller sends this Data to the Model asynchronusly gets the Data from the API. 
+Once the Data has arrived the Controller assk for that Data, recieves it and sends it to the View, wich will render the 
+Recipe on the screen.

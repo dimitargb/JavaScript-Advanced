@@ -1,0 +1,28 @@
+In order to render a certain nuber of results on a Page we use Pagination.
+For exsample in our Project we want to render 10 results of serched data and the next on a next page.
+So we go to controlSearchResults -> resultsView.render(model.state.search.results); 
+We dont want to rder all results bur just 10 results. We basucally need to create a function in the model
+wich will take in teh page that we want to render and which will than only return the results that we want to render.
+for that page.
+
+So we create a new function in our model.js called getSearchResultsPage().
+We calculate the start and end of the page and we write the function. Than this should go into the state.
+We call it resultsPerPage.
+
+export const getSearchResultsPage = function (page = state.search.page) {
+  state.search.page = page;
+
+  const start = (page - 1) * state.search.resultsPerPage;  //0;
+  const end = page * state.search.resultsPerPage;   //9;
+
+    return state.search.results.slice(start, end)
+}
+
+Now we go back to the controller and in the render results we write:
+resultsView.render(model.getSearchResultsPage());
+
+In out model we shoud store the Page number that is coming in the state. We put here that the page: 1;
+Also in the getSearchResultsPage  function we put:
+state.search.page = page;
+
+So now even if we dont put one or two in the getSearchResultsPage() it will alwyas starts with one.

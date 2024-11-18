@@ -1,0 +1,72 @@
+Because we have 10 results which are rendreed on the side we have have one Button doen saying page 2 and one button saying page1.
+If we are on page 2 we have a button for page 3 and page 1 ect. On the last page we only have a button to go back and on 
+the first page we only have a buton toi go to page 2.
+
+So lets implement new View for this Pagination. So in the view folder we create a new file called paginationView.js
+
+Than we need _generateMarkup() method and we have 4 scenarious. Form the state we need the search object with the
+results and the page.
+
+So lets got to our controller and the render function and pass in the data that we need and use it than.
+We want to display the Pagination write in the moment when we despaly the search results.
+
+After rendering the results we want to render the Pagination buttons.
+
+So now we need to export the paginationView into the controller.
+export default new PaginationView();
+Than we import the paginationView in the controller.
+import paginationView from './views/paginationView.js';
+
+After this we create the render the pagaination method:
+paginationView.render(model.state.search);
+
+In order to fugure out if we are on the first page or other page, we need to know how many pages there are.
+How we actually know the numbee of pages. We need the number of results devided by number of results per page.
+So in the paginationView we write:
+const numPages = Math.ceil(this._data.results.length / this._data.resultsPerPage);
+
+const controlSearchResults = async function () {
+    try {
+      resultsView.renderSpinner();
+
+      // 1. Get search query
+      const query = serachView.getQuery();
+      if(!query) return;
+
+      // 2. Load search results
+      await model.loadSearchResults(query);
+
+      //3. render results
+      //resultsView.render(model.state.search.results);
+      resultsView.render(model.getSearchResultsPage(6));
+
+      //4. render the initial Pagination buttons;
+      paginationView.render(model.state.search);
+    }
+    catch(err) {
+      console.log(err);
+    }
+};
+
+Now what we need to do is to create the markup. So we go the HTML and copy the pagination code and paste it 
+in the generateMarkup function in paginationView.
+
+After that we need to add eventListeners to the buttons to go back and forward. For that we need to use the publisher
+subscriber pattern. This works by creatting a publisher that creates a function listening for the event, which recieves 
+a handler function. this way we are gonna listen for the event in the View, while in the same time we are gona be bale to 
+handle this event from the controller.
+
+So we add the addHandlerClick(handler) method in the paginationView
+Here we use event Delegation:
+
+addHandlerClick(handler) {
+        this._parentElement.addEventListener('click', function(e){
+            const btn = e.target.closest('.btn--inline');
+            console.log(btn);
+        })
+    };
+
+Now we go to the controller and cerate a new controller. this controller will be a activated whenever
+we click on one of the buttons.
+Now we need to add a Data attribute in order the button to know which page to render. We add thus Data attribute in the
+paginationView in _generateMarkup() function.

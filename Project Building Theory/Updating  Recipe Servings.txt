@@ -1,0 +1,35 @@
+We add another Controller function. In the controller.js we crate another function controlServings().
+The update is happening in the model not in the controller. So in the model we will have a method called updateServings().
+And then we can pass in the new servings.So let's say updateServings(6) we pass six inside.
+Now lets' go to the model and implement this:
+The function will take in the number of servings (newServings) for example (6);
+
+export const updateServings = function(newServings){
+  state.recipe.ingredients.forEach(ingredient => {
+    ingredient.quantity = ingredient.quantity * newServings / state.recipe.servings;
+    // newQuantity = oldQuantity * newServings/ oldServings
+  });
+
+  state.recipe.servings = newServings;
+};
+
+What this function will do is to reach into the state and particualt into the recipe ingredients and than change the 
+quantity in each ingredient which is an object wich contains the quantity. This quantity we want to change.
+
+We also need to update the Servings in the state -> state.recipe.servings = newServings;
+
+Now we go back to the controller and than we need to update the recipeView.
+recipeView.render(model.state.recipe) ->  // Update the reicpeView.
+
+After that we cal theis new controlServings function in the init function.
+
+What we will do now is to create a new eventlistener in the recipeView when we press a button.
+So we create a new method addHandler. The best way to do this is eventDelegation to the buttons.
+We can listen for enets on the parentElement and than check if the click target was one of those buttons.
+So we use the closest() method which us very usefull for eventDeleagtion and we use the btn--tiny class
+to reach those buttons. 
+Now we need to connect this with the controller in the init function in the controller.js
+In order to get to the buttons to increase or decrease value to the buttons we need to use the data Properties.
+So we add new property to the buttons for increase and decrease and this way we can red the value of those
+properies in the addEventListener function. 
+In the buttons with btn--increase-servings we adfd new property data-update-to=""

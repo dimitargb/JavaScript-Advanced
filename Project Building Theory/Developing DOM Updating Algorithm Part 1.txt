@@ -1,0 +1,45 @@
+In the control.js insted to call the redmner method -> recipeView.render(model.state.recipe); we will call the update method, so
+instead we call upfdate method -> recipeView.update(model.state.recipe); The update method will only update text and atributes in
+the DOM, without having to re -render the entire view.
+So lets go to the View.js, because we want this update method to be available on all the views, because we will use it in
+multiple situatations in the Project. It is called -> update(data);
+
+update(data){
+      if(!data || (Array.isArray(data) && data.length === 0)) return this.renderError();
+
+        this._data = data;
+        const newMarkup = this._generateMarkup();
+        const newDom = document.createRange().createContextualFragment(newMarkup);
+    }
+What we do here in the View is to create a new markup but not render it. What we gonna do is to compare the new HTML to the
+current HTML and then only chnage text and attributes that actually have changed from the old version to the new version.
+We carete a newDom -> document.createRange().createContextualFragment(newMarkup) and in the Fragment we pass in the newMarkup.
+This method will convert the string into real DOM note object.
+Basically the newDom will become a big Object which is like virtual DOM. This is DOM that is not really living on the Page,
+but lives in the memory.
+So we can now use that DOM as if it was a real DOM on our Page.
+We can call const newElements = newDom.querySelectorAll('*') and select all the elements in there.
+We use a method called isEqualNode() which will compare the content of newEl and of currentElement;
+
+    update(data){
+      if(!data || (Array.isArray(data) && data.length === 0)) return this.renderError();
+
+        this._data = data;
+        const newMarkup = this._generateMarkup();
+
+        const newDom = document.createRange().createContextualFragment(newMarkup);
+        const newElements = Array.from(newDom.querySelectorAll('*'));
+        const currentElements = Array.from(this._parentElement.querySelectorAll('*'));
+     
+        newElements.forEach((newEl, i)=>{
+          const currentElement = currentElements[i];
+          console.log(currentElement, newEl.isEqualNode(currentElement));
+
+          if(!newEl.isEqualNode(currentElement)){
+            currentElement.textContent = newEl.textContent
+          }
+        })
+    }
+
+
+   

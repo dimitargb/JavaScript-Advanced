@@ -1,0 +1,43 @@
+We need to determine if the element only contains text, because this is waht we want to change.
+Whenever an Element changes we also want to change the attributes.
+
+When we want to change Attributes when the newElement is diffrent form the Old Element, we do Updates changed Attributes.
+Here we can use the attributes property on an element -> newEl.attributes;
+
+We ant to loop over newEl.attributes and we need to convert that to an Array with Array.from();
+
+Array.from(newEl.attributes).forEach((attribute) => currentElement.setAttribute(attribute.name, attribute.value))
+
+   update(data){
+      if(!data || (Array.isArray(data) && data.length === 0)) return this.renderError();
+
+        this._data = data;
+        const newMarkup = this._generateMarkup();
+
+        const newDom = document.createRange().createContextualFragment(newMarkup);
+        const newElements = Array.from(newDom.querySelectorAll('*'));
+        const currentElements = Array.from(this._parentElement.querySelectorAll('*'));
+     
+        newElements.forEach((newEl, i)=>{
+          const currentElement = currentElements[i];
+          //console.log(currentElement, newEl.isEqualNode(currentElement));
+
+          //Updates changed Text
+          if(!newEl.isEqualNode(currentElement) && newEl.firstChild?.nodeValue.trim() !== ''){
+          
+            currentElement.textContent = newEl.textContent;
+          }
+
+          //Updates changed Attributes
+          if(!newEl.isEqualNode(currentElement)){
+            Array.from(newEl.attributes).forEach((attribute) => currentElement.setAttribute(attribute.name, attribute.value))
+          }
+        });
+
+    }
+
+What we do in the //Updates changed Attributes part is to simply replace all the attributes in the currentElement,
+by the attributes coming form the newEl;
+
+This way we successfuly implemented a method for updating the DOM, only in places where the text or the attributes
+changed.

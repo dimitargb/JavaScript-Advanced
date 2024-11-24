@@ -1,0 +1,44 @@
+Bookmarks are all about data. So ww will start from the model .js where we work with data.
+We will create a new function here called addBookmark(recipe), that wil recive a recipe inside.
+After we have to add bookmarks to our state object, which we start as a empty array. -> bookmarks: [],
+But then by adding  bookmark simply means to push s refcipe into the empty array.
+We also want to mark thr current recipe as been bookmarked, if the current recipe is the same recipe that we are adding
+into the empty array as a bookmark.
+
+export const addBookmark = function(recipe){
+  // Add bookmark
+  state.bookmarks.push(recipe);
+
+  // Mark current recipe as bookmark
+  if(recipe.id === state.recipe.id) {
+    state.recipe.bookmarks = true;
+  }
+}
+
+So now we go to the controller.js and create a new controller. This is a controller for adding new Bookmark.
+
+const controlAddBookmark = function() {
+  model.addBookmark(model.state.recipe);
+  //console.log(model.state.recipe);
+}
+
+Now we go to recipeView and create another function called addHandlerAddBookmark in order to do delegation to the bookmark button.
+This addHandlerAddBookmark(handler) will recive a handler function inside, which in this case is gonna be the controller function
+we just cretaed -> controlAddBookmark();
+
+     addHandlerAddBookmark(handler){
+        this._parentElement.addEventListener('click', function(e){
+        const btn = e.target.closest('.btn--bookmark');
+        if(!btn) return;
+
+        handler();
+        })
+      }
+Now what we have to do is in the cotroller.js to call this addHandlerAddBookmar method.
+recipeView.addHandlerAddBookmark(controlAddBookmark);
+Than when we click on the button we will add the current recipe as a bookmark.
+Now what we want to do is to render the bookmark icon as filled, so we go back to our view and basically say, that if
+bookmark is true than render the filled icon and if not render the other one.
+So we go to the recipeView where we generate the markup. So int he button icon we write:
+${this._data.bookmark ?  '-fill' : ''}";
+And now finnaly to actually make this work we will have to update the entire recipe in the controller.js

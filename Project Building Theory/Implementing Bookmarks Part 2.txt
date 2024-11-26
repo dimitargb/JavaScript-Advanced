@@ -1,0 +1,50 @@
+As we restart the application we noticed that the filled bookmarked icont is not filled anymore.
+The reason for that is, when we load each new recipe it will always be loaded basically from scratch, it will be loaded from the 
+API. What we need to do is to use the data that we stored in the bookmarks array in the state, to mark any recipe that we 
+load from the state as bookmarked, if it is already in the bookmarks array.
+
+So now we go back to the model.js and specifically to our function that loads the recipe -> loadRecipe();
+What we can do here as we got all the data and store it in the state, than what we can do is to check if there is 
+already a recipe with the same id in the bookmarks state and if it is than we will mark the current recipe that we just loaded
+from the API as bookmarked as true.
+
+So here we can use the some() method. The method will loop over an array and retunr true if any of them return true for
+the condition that we cpecify.
+If bookmark.id === id is same as the id that we just recived here. If there is any bookmark which has the bookmark id
+equal to the id that we have just recieved, than we want the current recipe wich is state.recipe.bookmarked = true;
+
+
+if(state.bookmarks.some(bookmark => bookmark.id === id))
+        state.recipe.bookmarked = true;
+        else state.recipe.bookmarked = false;
+
+Now the final piece when we click this button again we want to unbookmark the bookmarked button, so we want to remove it from the 
+bookmarks.
+What we need now is another function or method in our model, wich will remove the bookmark.
+the deleteBookmark finction will just recieve an id.
+If we want to delete something we only use the id.
+
+export const deleteBookmark = function (id) {
+  // Delete bookmark
+  const index = state.bookmarks.findIndex(el => el.id === id);
+  state.bookmarks.splice(index, 1);
+
+  // Mark current recipe as NOT bookmarked
+  if (id === state.recipe.id) state.recipe.bookmarked = false;
+}
+
+What we want to do here is basically delete a recipe thet has this id from the bookmarks array.
+Now what we have to do is to use this function somewhere and this can only be in the controller.
+
+const controlAddBookmark = function() {
+  
+  // 1 Add/remove bookmark
+  if (!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe);
+  else model.deleteBookmark(model.state.recipe.id);
+
+  // 2 Update recipe view
+  recipeView.update(model.state.recipe);
+
+  // 3 Render bookmarks
+  bookmarksView.render(model.state.bookmarks);
+}

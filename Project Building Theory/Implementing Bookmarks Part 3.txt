@@ -1,0 +1,18 @@
+We want when we bokkmark an recipe we want that recipe to show up in the right corner in the Bookmarks section.
+In the index.html in the Bookmarks we have the preview element. This is a list element with the class of preview in it.
+So now we create a bookmarksView.js in the views Folder.
+
+What we want to do now is that whenever a new Bookmark is added, we want to render the bookmarksView with all the bookmarks.
+This means with the array of the bookmarks.
+This is in the controller in the controlAddBookmark() function.
+
+What needs to be done yet irthat each time that we diplay a recipe we should update the entire bookmarks panel,
+so it can select the curent recipe.
+
+We do this in the controlRecipes function in the cotroller.js
+
+ // Update results view to mark selected search result
+    resultsView.update(model.getSearchResultsPage());
+    bookmarksView.update(model.state.bookmarks);
+
+Now we have to create antoher view called previewView, so we can swithch between bookmarksView and resultsView.

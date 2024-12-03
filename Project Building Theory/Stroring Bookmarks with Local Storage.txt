@@ -1,0 +1,21 @@
+Storing data in LocalStorage is all about data. This will be implemented in the model.js.
+When should the bokkmarks be stored to LocalStorage, this happends whenever the user bookmarks a recipe and 
+also when the user unbookmarks a recipe. In this cases the current bookmarks array needs to be stored in LocalStorage.
+ So we need to create a new function called persistBookmarks() in the model.js.
+
+ const persistBookmarks = function() {
+  localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
+}
+
+Now what we have to do is to call this function in the addBookmark function and deleteBookmark function.
+What we need to do now is to run a method which will render the bookmarks into the BOOKMARKS section,
+after the page has been reloadet.
+
+The first step is to get the bookmarks out of local storage and back in our code and after that we can then render them
+back to the BOOKMARKS section.
+
+So we write the code for taking the bokkings out from the local storage in the model.js
+We write initialisation function called init() function. In there we need to do the opposit:
+
+ localStorage.getItem('bookmarks') and we need also to store that somewhere so it is:
+ const storage = localStorage.getItem('bookmarks');

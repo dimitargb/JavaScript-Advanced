@@ -1,0 +1,89 @@
+When we click on ADD RECIPE it opens a form. 
+So let's start by creating a new addRecipeView in the views folder.
+
+import View from './View.js';
+import icons from 'url:../../img/icons.svg';
+
+
+class AddRecipeView extends View{
+    _parentElement = document.querySelector('.upload');
+
+    _window = document.querySelector('.add-recipe-window');
+    _overlay = document.querySelector('.overlay');
+    _btnOpen = document.querySelector('.nav__btn--add-recipe');
+    _btnClose = document.querySelector('.btn--close-modal');
+
+    _generateMarkup(){
+
+    }  
+};
+
+export default new AddRecipeView();
+
+What we do we attach queliselectors to the Elements with the hidden class and the form and also to the buttins for opening 
+and closing:
+
+    _window = document.querySelector('.add-recipe-window');
+    _overlay = document.querySelector('.overlay');
+    _btnOpen = document.querySelector('.nav__btn--add-recipe');
+    _btnClose = document.querySelector('.btn--close-modal');
+
+After this we create a function called addHandlerShowWindow() and we add eventListeners to the window and overlay:
+
+  addHandlerShowWindow() {
+        this._btnOpen.addEventListener('click', function(){
+            this._overlay.classList.toggle('hidden');
+            this._window .classList.toggle('hidden');
+        })
+    }
+We want this function addHandlerShowWindow() to be called as soon as the page loads. We can run this function as soon
+as the object is created. We don't need a controller here.
+So we add a constructor method.
+In order to show this window the controller does not interfear at all. What we still have to do in the controller is to 
+import this object AddRecipeView().
+Than we create a constructor method:
+ constructor(){
+        super();
+        this._addHandlerShowWindow();
+        this._addHandlerHideWindow();
+    }
+And we create 2 functions one for showing window one for hiding window and a toggle function.
+
+ toggleWindow(){
+        this._overlay.classList.toggle('hidden');
+        this._window .classList.toggle('hidden');
+    }
+
+    _addHandlerShowWindow() {
+        this._btnOpen.addEventListener('click', this.toggleWindow.bind(this))
+    }
+
+    _addHandlerHideWindow() {
+        this._btnClose.addEventListener('click', this.toggleWindow.bind(this))
+        this._overlay.addEventListener('click', this.toggleWindow.bind(this))
+    }
+
+After this we create a new method for uloding a recipe in the addRecipeView.
+Here we will listen to the _parentElement:
+
+   addHandlerUpload(handler) {
+        this._parentElement.addEventListener('submit', function(e){
+            e.preventDefault();
+            const dataArray =[...new FormData(this)];
+            const data = Object.fromEntries(dataArray)
+            
+            handler(data);
+        })
+    }
+
+Now we need to create a controller function that will be the handler of this event.
+
+const controlAddRecipe =  function(newRecipe) {
+  console.log(newRecipe);
+
+  // Upload the new Recipe data
+}
+
+The dataArray in the addHandlerUpload method is an array and we need to covert it into an object.
+To convert it to object we use a nice method called object.fromEntries(dataArray).
+This method fromEntries(), takes an array of entries and converts it to and object.

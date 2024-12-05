@@ -1,0 +1,70 @@
+We go to the model.js and after the bookmarks function we create a new function called uploadRecipe(newRecipe);
+This function wil make a request to the API and it will recieve the data for newRecipe. It is async function
+because it will make a request to the API.
+The first task of this function is to take the row input data and transform it into the same format as the data 
+that we get out of the API.
+
+export const uploadRecipe = async function(newRecipe) {
+  const ingredients = Object.entries(newRecipe).filter(entry => entry[0].startsWith('ingredient') && entry[1] !== '');
+  console.log(ingredients);
+}
+
+Here we use the filter method to filter only the arrays we want the one starting with 'ingredient' and the
+second entry && entry[1] !== '' not to be an empty string.
+Now what we need to do is to take the data out of the string and put htis into an Object.
+For that we finally use the map method. So now we will take each ingredient and split it and beore that we make sure
+thata we remove any white Space here using replaceAll() replacing all spaces with an empty string.
+This should then return an array of 3 elements. So lets distruct this array.
+const [quantity, unit, description] = ingredient.replaceAll(' ', '').split(',');
+
+Now we display an errorMessage if the lenght of the array is less than 3;
+ if(ingredientArray.length !== 3) throw new Error('Wrong ingredient format! Please use the correct format ');
+
+ const controlAddRecipe =  async function(newRecipe) {
+  try{
+    //4) Upload the new Recipe data
+  await model.uploadRecipe(newRecipe);
+  } catch(err) {
+    console.error('💥', err);
+    addRecipeView.renderError(err.message)
+  }
+}
+
+Now we have to create the Object that is ready to be uploaded.
+
+const recipeObject = {
+      title: newRecipe.title,
+      source_url: newRecipe.sourceUrl,
+      image_url: newRecipe.image,
+      publisher: newRecipe.publisher,
+      cooking_time: +newRecipe.cookingTime,
+      servings: +newRecipe.servings,
+      ingredients,
+    }
+
+This Object should be in the try block of the model.js.
+After we have created the recipeObject we have to send it true the API. For that we need to create a method for sending JSON
+in the heplers.js creating the method sendJSON, to do that we need a POST request. So in the fecth we need to pass besids
+the url an object with some options.
+
+export const sendJSON = async function(url, uploadData) {
+
+  try {
+    const fetchPro = fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type':'application/json',
+      },
+      body: JSON.stringify(uploadData),
+    });
+    const res = await Promise.race([fetchPro, timeout(TIMEOUT_SEC)]);
+    //const res = await fetch('https://forkify-api.herokuapp.com/api/v2/recipes/664c8f193e7aa067e94e8438');
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(`${data.message} (${res.status})`);
+
+    return data;
+  }
+  catch(err) {
+      throw err;
+  }

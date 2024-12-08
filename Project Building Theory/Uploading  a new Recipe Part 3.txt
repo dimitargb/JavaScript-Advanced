@@ -1,0 +1,44 @@
+What we need to do  next is to re-render the bookmarksView and to change the id in the URL.
+So we go to the controller.js and after displaying the success message we render the bookmarksView
+->  // Render bookmark view
+bookmarksView.render(model.state.bookmarks); this will add the new Element to the bookmark view.
+The second thing we want to do is to change the id in the URL. To do that we can use the hisory API.
+
+We can say :   
+// Change ID in the URL
+  window.history.pushState(null, '', `#${model.state.recipe.id}`);
+The pushState() method will allow us to change the URL without reloading the Page.
+The pushState method takes 3 agruments(null, '', `#${model.state.recipe.id}`), the first is the state, second id the title
+and the third one is the URL which is the important one and here we can simply put he hash(#)and then the id
+ -> `#${model.state.recipe.id}`, that we want ot puton to the URL -> model.state.recipe.id;
+
+The next hing to do is to refactor the getJSON and sendJSON methods form helpers.js
+Because those functions are almost the same we can put them into one function called AJAX.
+This function will recive the url and the upload data.
+
+export const AJAX = async function(url, uploadData = undifined) {
+
+}
+and we will set this one to undifined by default.
+With this when we call the AJAX function wiht only the url, we ca conditonally definong the fetchPro veriable.
+
+Now we have to use this recipe to mark this recipe as our own recipe, by dispalying a small icon next to the bookmakr icon.
+To do that we need to attach out key to all API query -> ?key=${KEY}.
+We add this key to loadRecipe and loadSearchResul functions in the model.js.
+Now by adding this key specially in the serchResults it will then load all the recipes including the onece that 
+contian teir own key. 
+So if we search for the newRecipe that we created already in the serch bar, it will appear in the new search.
+Now we want to mark this as our owm recipe in the serach results and also in the icon nect to bookmarks.
+So lets now go to the recipeView and previewView responsable for those results and add the logic to dispaly the small icon there.
+
+What we will do is to add the hidden class if there is no key on the recipe, but if there is a key than we will add no class and 
+it will become visable -> <div class="recipe__user-generated ${this._data.key ? '' : 'hidden'}">
+The same in the previewView.
+
+In the loadSearchResults in the model.js we create the data that will be put in the state -> state.search.results which
+will retrun an object that contains id, title, publisher and image but not the key, so we take the code for the key from 
+createRecipeObject -> ...(recipe.key && { key: recipe.key}), and retun it int the serachResults as well.
+Now in the serchResultsview we have a small icon which indicated that this is our recipe and if recipe is not ours
+the icon does not appear.
+
+After this we creat our own pizza and take a image from unsplash.
